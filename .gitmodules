@@ -1,0 +1,3 @@
+[submodule "bun_avm_bands"]
+	path = bun_avm_bands
+	url = https://github.com/Pixxiejinx/bun_avm_bands
