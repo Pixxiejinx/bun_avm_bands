@@ -35,14 +35,18 @@
   
   window.socket = socket
   
-  // socket.on("saludo", (payload) => {
-  //   console.log("Mensaje del servidor", payload);
-  // })
+  socket.on("saludo", (payload) => {
+  console.log("Mensaje del servidor", payload);
+   })
   
-  // socket.on("chat", (message) => {
-  //   console.log("Mensaje del servidor", message);
-  // })
+  socket.on("chat", (message) => {
+  console.log("Mensaje del servidor", message);
+  })
     
+  socket.on("disconnect", () => {
+  console.log("Desconectado del servidor");
+  })
+  
 </script>
 
 </body>
