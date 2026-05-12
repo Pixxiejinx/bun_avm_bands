@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import { Server as Engine} from "@socket.io/bun-engine";
-import { SERVER_CONFIG } from "../config/server_config";
+import { SERVER_CONFIG } from "./config/server_config";
+import { bandsService } from "./service/bands.service";
 
 
 
@@ -18,6 +19,23 @@ io.on("connection", (socket) => {
     socket.emit("saludo", "Hola desde el servidor");
 
     socket.on("chat", (msg)=> io.emit("chat", msg));
+
+    socket.emit("BANDS_LIST", bandsService.obtinereBands());
+
+    socket.on("ADD_BAND", ({nomen}) => {
+        if (nomen.trim() === "") return;
+
+        bandsService.addereBand(nomen);
+
+        io.emit("BANDS_LIST", bandsService.obtinereBands());
+    });
+
+     socket.on("VOTE_BAND", (playload: {id: string}) => {
+       const band = bandsService.addereVotumBand(playload.id);
+       if(band) {
+        io.emit("BANDS_LIST", bandsService.obtinereBands());
+       }
+    });
 });
 
 io.on("disconnect", (socket) => {

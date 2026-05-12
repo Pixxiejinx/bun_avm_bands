@@ -1,26 +1,34 @@
+import { creareBandsInitiales } from "../data/bands-initales.data"
 import type { Band } from "../types"
-import { creatioUuid } from "../utils/creatio_uuid"
 
+interface BandsState {
+  bands: Band[]
+}
 
-const bandsInitiales = [
-  {
-    nomen: 'Metallica',
-    numerusVotum: 28,
-  },
-  {
-    nomen: 'Queen',
-    numerusVotum: 22,
-  },
-  {
-    nomen: 'Heroes del silencio',
-    numerusVotum: 15,
-  },
-  {
-    nomen: 'Bon Jovi',
-    numerusVotum: 10,
-  },
-]
+export class BandsStore {
 
-export const creareBandsInitiales = (): Band[] => {
-  return bandsInitiales.map(band => ({ ...band, id: creatioUuid() }))
+  private state: BandsState = {
+    bands: creareBandsInitiales()
+  }
+  
+  addereBand(band: Band) {
+    this.state.bands.push(band)
+  } 
+
+  obtinereBands(): Band[] {
+    return this.state.bands
+  }
+
+  delereBand(id: string): boolean {
+    const longitudoInitialis = this.state.bands.length
+    this.state.bands = this.state.bands.filter(band => band.id !== id)
+    return this.state.bands.length < longitudoInitialis
+  }
+
+  addereVotumBand(id: string) {
+    const band = this.state.bands.find(band => band.id === id)
+    if (!band) return null
+    band.numerusVotum += 1
+    return band
+  }
 }
